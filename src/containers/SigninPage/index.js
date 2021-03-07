@@ -1,7 +1,9 @@
-import React from "react";
 import Layout from "../../components/Layout";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import Input from "../../components/UI/Input";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { signin } from "../../actions";
 
 /**
  * @author
@@ -9,6 +11,19 @@ import Input from "../../components/UI/Input";
  **/
 
 const SigninPage = (props) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const dispatch = useDispatch();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const user = {
+            email,
+            password,
+        };
+        dispatch(signin(user))
+    };
+
     return (
         <Layout>
             <Container>
@@ -30,9 +45,19 @@ const SigninPage = (props) => {
                             >
                                 Sign In
                             </h2>
-                            <Form>
-                                <Input type="text" placeholder="email" />
-                                <Input type="password" placeholder="password" />
+                            <Form onSubmit={handleSubmit}>
+                                <Input
+                                    type="text"
+                                    placeholder="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                                <Input
+                                    type="password"
+                                    placeholder="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
                                 <Button variant="primary" type="submit" className="btn btn-block">
                                     Signin
                                 </Button>
