@@ -1,17 +1,19 @@
-import HomePage from "./containers/HomePage";
-import SigninPage from "./containers/SigninPage";
-import SignupPage from "./containers/SignupPage";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getInitialData, isUserLoggedIn } from "./actions";
+import Router from "./Router";
 
 function App() {
-    return (
-        <Router>
-            <Route path="/" exact component={HomePage} />
-            <Route path="/signin" component={SigninPage} />
-            <Route path="/signup" component={SignupPage} />
-        </Router>
-    );
+    const dispatch = useDispatch();
+    const auth = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        !auth.authenticate && dispatch(isUserLoggedIn());
+        auth.authenticate && dispatch(getInitialData());
+    }, [auth.authenticate]);
+
+    return <Router />;
 }
 
 export default App;

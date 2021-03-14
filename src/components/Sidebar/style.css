@@ -1,0 +1,102 @@
+.sidebar{
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: #eee;
+    padding: 0;
+    padding-top: 57px;
+    box-shadow: inset 0 0 5px #aaa;
+}
+.sidebar ul{
+    margin: 0;
+    padding: 0;
+}
+.sidebar ul li{
+    list-style: none;
+}
+.sidebar ul li a{
+    display: block;
+    color: #343a40;
+    padding: 5px 20px;
+    box-sizing: border-box;
+    margin: 5px 0 5px 10px;
+    text-decoration: none;
+    border-radius: 20px 0 0 20px;
+}
+.sidebar ul li a:hover{
+    background: #343a40;
+    color: #fff;
+    transition: all .2s linear;
+}
+.sidebar ul li a.active{
+    background: #343a40;
+    color: #fff;
+}
+.sideIcons{
+    font-size: 24px;
+    margin-right: 10px;
+    margin-left: 5px;
+    border: 1px solid;
+    padding: 3px;
+    border-radius: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+.sidebar ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.sidebar ul li{
+    margin: 5px 0 5px 15px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 5px 0 5px 20px;
+    transition: all .15s linear;
+    
+}
+.sidebar ul li:hover{
+    background: #343a40;
+}
+.sidebar ul li a{
+    text-decoration: none;
+    color: #343a40;
+    font-size: 18px;
+}
+.sidebar ul li:hover a{
+    color: #fff;
+}
+.sidebar ul li.active a{
+    color: #fff;
+} */

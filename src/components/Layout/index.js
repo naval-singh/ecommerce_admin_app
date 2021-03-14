@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../Header";
+import Sidebar from "../Sidebar";
 
 /**
  * @author
@@ -10,7 +11,7 @@ const Layout = (props) => {
     return (
         <>
             <Header />
-            {props.children}
+            {props.sidebar ? <Sidebar>{props.children}</Sidebar> : props.children}
         </>
     );
 };

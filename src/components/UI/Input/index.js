@@ -7,12 +7,14 @@ import { Form } from "react-bootstrap";
  **/
 
 const Input = (props) => {
-    const { label, type, placeholder, message, value, onChange } = props;
+    const { label, type, placeholder, errorMessage, value, onChange, isInvalid, messageType } = props;
     return (
         <Form.Group>
             {label && <Form.Label>{label}</Form.Label>}
-            <Form.Control type={type} value={value} onChange={onChange} placeholder={placeholder} />
-            <Form.Text className="text-muted">{message}</Form.Text>
+            <Form.Control required isInvalid={isInvalid} min={0} type={type} value={value} onChange={onChange} placeholder={placeholder} />
+            {errorMessage && <Form.Control.Feedback type={messageType}>
+                {errorMessage}
+            </Form.Control.Feedback>}
         </Form.Group>
     );
 };
