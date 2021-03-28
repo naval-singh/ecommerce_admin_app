@@ -72,7 +72,7 @@ const SignupPage = (props) => {
                             </h2>
                             <Form onSubmit={handleSubmit}>
                                 <Row>
-                                    <Col md={6}>
+                                    <Col md={6} style={{ paddingRight: 8 }}>
                                         <Input
                                             type="text"
                                             placeholder="first name"
@@ -80,7 +80,7 @@ const SignupPage = (props) => {
                                             onChange={(e) => setFirstName(e.target.value)}
                                         />
                                     </Col>
-                                    <Col md={6}>
+                                    <Col md={6} style={{ paddingLeft: 8 }}>
                                         <Input
                                             type="text"
                                             placeholder="last name"

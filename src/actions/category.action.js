@@ -40,3 +40,15 @@ export const addNewCategory = (form) => {
         }
     };
 };
+
+export const updateCategories = (form) => {
+    return async (dispatch) => {
+        const res = await axios.post("/category/update", form);
+        console.log({ res });
+        if (res.data.status) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+};
