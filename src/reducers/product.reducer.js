@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-    console.log(action);
+    // console.log(action);
     switch (action.type) {
         case productConstants.GET_ALL_PRODUCT_REQUEST:
             state = {

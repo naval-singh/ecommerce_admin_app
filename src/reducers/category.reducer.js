@@ -7,46 +7,45 @@ const initialState = {
 };
 
 const buildNewCategories = (categories, newCategory) => {
-
-    if(!newCategory.parentId){
+    if (!newCategory.parentId) {
         return [
             ...categories,
             {
                 _id: newCategory._id,
                 name: newCategory.name,
                 slug: newCategory.slug,
-                children: []
-            }
-        ]
+                children: [],
+            },
+        ];
     }
 
     const myCategories = [];
-    for(let cat of categories){
-        if(cat._id === newCategory.parentId){
+    for (let cat of categories) {
+        if (cat._id === newCategory.parentId) {
             let category = {
                 _id: newCategory._id,
                 name: newCategory.name,
                 slug: newCategory.slug,
                 parentId: newCategory.parentId,
                 categoryPicture: newCategory.categoryPicture,
-                children: []
-            }
+                children: [],
+            };
             myCategories.push({
                 ...cat,
-                children: cat.children ? [...cat.children, category] : [category]
-            })
-        }else{
+                children: cat.children ? [...cat.children, category] : [category],
+            });
+        } else {
             myCategories.push({
                 ...cat,
-                children: cat.children ? buildNewCategories(cat.children, newCategory) : []
-            })
+                children: cat.children ? buildNewCategories(cat.children, newCategory) : [],
+            });
         }
     }
     return myCategories;
-}
+};
 
 export default (state = initialState, action) => {
-    console.log(action);
+    // console.log(action);
     switch (action.type) {
         case categoryConstants.GET_ALL_CATEGORY_REQUEST:
             state = {
@@ -75,7 +74,7 @@ export default (state = initialState, action) => {
             };
             break;
         case categoryConstants.ADD_NEW_CATEGORY_SUCCESS:
-            const updatedCategory = buildNewCategories(state.categories, action.payload.category)
+            const updatedCategory = buildNewCategories(state.categories, action.payload.category);
             state = {
                 ...state,
                 categories: updatedCategory,
@@ -87,6 +86,42 @@ export default (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload.error,
+            };
+            break;
+        case categoryConstants.UPDATE_CATEGORY_REQUEST:
+            state = {
+                ...state,
+                loading: true,
+            };
+            break;
+        case categoryConstants.UPDATE_CATEGORY_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+            };
+            break;
+        case categoryConstants.UPDATE_CATEGORY_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+            };
+            break;
+        case categoryConstants.DELETE_CATEGORY_REQUEST:
+            state = {
+                ...state,
+                loading: true,
+            };
+            break;
+        case categoryConstants.DELETE_CATEGORY_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+            };
+            break;
+        case categoryConstants.DELETE_CATEGORY_FAILURE:
+            state = {
+                ...state,
+                loading: false,
             };
             break;
     }

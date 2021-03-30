@@ -43,11 +43,27 @@ export const addNewCategory = (form) => {
 
 export const updateCategories = (form) => {
     return async (dispatch) => {
+        dispatch({ type: categoryConstants.UPDATE_CATEGORY_REQUEST });
         const res = await axios.post("/category/update", form);
-        console.log({ res });
         if (res.data.status) {
+            dispatch({ type: categoryConstants.UPDATE_CATEGORY_SUCCESS });
             return true;
         } else {
+            dispatch({ type: categoryConstants.UPDATE_CATEGORY_FAILURE });
+            return false;
+        }
+    };
+};
+
+export const deleteCategories = (payload) => {
+    return async (dispatch) => {
+        dispatch({ type: categoryConstants.DELETE_CATEGORY_REQUEST });
+        const res = await axios.post("/category/delete", payload);
+        if (res.data.status) {
+            dispatch({ type: categoryConstants.DELETE_CATEGORY_SUCCESS });
+            return true;
+        } else {
+            dispatch({ type: categoryConstants.DELETE_CATEGORY_FAILURE });
             return false;
         }
     };
