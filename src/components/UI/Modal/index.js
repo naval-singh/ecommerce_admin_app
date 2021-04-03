@@ -1,5 +1,6 @@
 import { Modal, Button, Row, Col } from "react-bootstrap";
 import React from "react";
+import './style.css';
 
 /**
  * @author
@@ -15,24 +16,18 @@ const MyModal = (props) => {
             </Modal.Header>
             <Modal.Body>{children}</Modal.Body>
             {onClick || buttons ? (
-                <Modal.Footer style={{ display: "block" }}>
-                    <Row>
+                <Modal.Footer style={{ display: "" }}>
                         {buttons && buttons.length > 0 ? (
                             buttons.map((item, index) => (
-                                <Col style={{margin: '0 -10px'}}>
-                                    <Button variant={item.variant} size="block" onClick={item.onClick}>
+                                    <Button variant={item.variant} style={{padding: '3px 15px'}} size="sm" onClick={item.onClick}>
                                         {item.label}
                                     </Button>
-                                </Col>
                             ))
                         ) : (
-                            <Col>
-                                <Button variant="danger" size="block" onClick={onClick}>
+                                <Button style={{background: '#343a40', padding: '3px 15px'}} size="sm" onClick={onClick}>
                                     Save
                                 </Button>
-                            </Col>
                         )}
-                    </Row>
                 </Modal.Footer>
             ) : null}
         </Modal>

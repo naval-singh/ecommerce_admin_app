@@ -20,6 +20,7 @@ import UpdateCategoryModal from "./components/UpdateCategoryModal";
 import AddCategoryModal from "./components/AddCategoryModal";
 import DeleteCategoryModal from "./components/DeleteCategoryModal";
 import "../style.css";
+import { linearCategories } from "../../helpers/linearCategories";
 
 /**
  * @author
@@ -48,7 +49,7 @@ const CategoryPage = (props) => {
     const handleCloseUpdateCategory = () => setShowUpdateCategory(false);
 
     const fillCheckedAndExpandedArray = () => {
-        const categories = linearCategoryList(category.categories);
+        const categories = linearCategories(category.categories);
         const checkedArray = [];
         const expandedArray = [];
         checked.length > 0 &&
@@ -91,14 +92,6 @@ const CategoryPage = (props) => {
         return myCategories;
     };
 
-    const linearCategoryList = (categories, options = []) => {
-        for (let category of categories) {
-            options.push({ value: category._id, name: category.name, parentId: category.parentId });
-            category.children.length > 0 && linearCategoryList(category.children, options);
-        }
-        return options;
-    };
-
     const handleSubmitUpdateCategory = () => {
         if (checkedArray.length > 0 || expandedArray.length > 0) {
             const form = new FormData();
@@ -114,11 +107,7 @@ const CategoryPage = (props) => {
                 form.append("type", item.type ? item.type : "");
                 form.append("parentId", item.parentId ? item.parentId : "");
             });
-            dispatch(updateCategories(form)).then((result) => {
-                if (result) {
-                    dispatch(getAllCategory());
-                }
-            });
+            dispatch(updateCategories(form));
         }
         handleCloseUpdateCategory();
     };
@@ -126,13 +115,8 @@ const CategoryPage = (props) => {
     const handleSubmitDeleteCategory = () => {
         if (checkedArray.length > 0) {
             const idsArray = checkedArray.map((item) => item.value);
-            console.log({ idsArray });
             const payload = { ids: idsArray };
-            dispatch(deleteCategories(payload)).then((result) => {
-                if (result) {
-                    dispatch(getAllCategory());
-                }
-            });
+            dispatch(deleteCategories(payload));
         }
         handleCloseDeleteCategory();
     };
@@ -204,7 +188,7 @@ const CategoryPage = (props) => {
                 setCategoryName={setCategoryName}
                 categoryParentId={categoryParentId}
                 setCategoryParentId={setCategoryParentId}
-                categoryList={linearCategoryList(category.categories)}
+                categoryList={linearCategories(category.categories)}
                 setCategoryPicture={setCategoryPicture}
             />
             <UpdateCategoryModal
@@ -216,7 +200,7 @@ const CategoryPage = (props) => {
                 checkedArray={checkedArray}
                 expandedArray={expandedArray}
                 handleUpdateCategoryInput={handleUpdateCategoryInput}
-                categoryList={linearCategoryList(category.categories)}
+                categoryList={linearCategories(category.categories)}
             />
             <DeleteCategoryModal
                 show={showDeleteCategory}

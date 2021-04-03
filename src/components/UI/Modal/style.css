@@ -1,0 +1,13 @@
+.modal-header{
+    padding: 5px 15px;
+    background: #343a40;
+}
+.modal-title{
+    font-size: 20px;
+    color: #fff;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+}
+.modal-footer{
+    padding: 5px 15px;
+}

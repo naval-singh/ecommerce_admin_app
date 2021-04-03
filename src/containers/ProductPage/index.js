@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewProduct } from "../../actions";
 import "./style.css";
 import { generatePublicURL } from "../../urlConfig";
+import { linearCategories } from "../../helpers/linearCategories";
 
 /**
  * @author
@@ -17,7 +18,7 @@ import { generatePublicURL } from "../../urlConfig";
 const ProductPage = (props) => {
     const [showAddProduct, setShowAddProduct] = useState(false);
     const [showDisplayProduct, setShowDisplayProduct] = useState(false);
-    const [productDetails, setProductDetails] = useState('');
+    const [productDetails, setProductDetails] = useState("");
     const [productName, setProductName] = useState("");
     const [quantity, setQuantity] = useState("");
     const [price, setPrice] = useState("");
@@ -32,65 +33,52 @@ const ProductPage = (props) => {
         setProductPictures([...productPictures, e.target.files[0]]);
     };
 
-    const linearCategoryList = (categories, options = []) => {
-        for (let category of categories) {
-            options.push({ value: category._id, name: category.name });
-            category.children.length > 0 && linearCategoryList(category.children, options);
-        }
-        return options;
-    };
-
     const handleOpenAddProduct = () => setShowAddProduct(true);
     const handleCloseAddProduct = () => setShowAddProduct(false);
-    const handleOpenDisplayProduct = (product) => (setProductDetails(product),setShowDisplayProduct(true));
+    const handleOpenDisplayProduct = (product) => (setProductDetails(product), setShowDisplayProduct(true));
     const handleCloseDisplayProduct = () => setShowDisplayProduct(false);
 
     const renderDisplayProductModal = () => {
-        if(!productDetails){
+        if (!productDetails) {
             return null;
         }
         return (
-            <Modal
-                size={"lg"}
-                show={showDisplayProduct}
-                onHide={handleCloseDisplayProduct}
-                title={"Product Details"}
-            >
+            <Modal size={"lg"} show={showDisplayProduct} onHide={handleCloseDisplayProduct} title={"Product Details"}>
                 <Row>
-                    <Col md='6'>
-                        <label className='key'>Name</label>
-                        <p className='value'>{productDetails.name}</p>
+                    <Col md="6">
+                        <label className="key">Name</label>
+                        <p className="value">{productDetails.name}</p>
                     </Col>
-                    <Col md='6'>
-                        <label className='key'>Price</label>
-                        <p className='value'>{productDetails.price}</p>
+                    <Col md="6">
+                        <label className="key">Price</label>
+                        <p className="value">{productDetails.price}</p>
                     </Col>
                 </Row>
                 <Row>
-                    <Col md='6'>
-                        <label className='key'>Quantity</label>
-                        <p className='value'>{productDetails.quantity}</p>
+                    <Col md="6">
+                        <label className="key">Quantity</label>
+                        <p className="value">{productDetails.quantity}</p>
                     </Col>
-                    <Col md='6'>
-                        <label className='key'>Category</label>
-                        <p className='value'>{productDetails.category.name}</p>
+                    <Col md="6">
+                        <label className="key">Category</label>
+                        <p className="value">{productDetails.category.name}</p>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <label className='key'>Description</label>
-                        <p className='value'>{productDetails.description}</p>
+                        <label className="key">Description</label>
+                        <p className="value">{productDetails.description}</p>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <label className='key'>Product Images</label>
-                        <div style={{ display: 'flex' }}>
-                            {productDetails.productPictures.map(pic =>
-                                <div className='imageContainer'>
+                        <label className="key">Product Images</label>
+                        <div style={{ display: "flex" }}>
+                            {productDetails.productPictures.map((pic) => (
+                                <div className="imageContainer">
                                     <img src={generatePublicURL(pic)} />
                                 </div>
-                            )}
+                            ))}
                         </div>
                     </Col>
                 </Row>
@@ -141,7 +129,7 @@ const ProductPage = (props) => {
                             onChange={(e) => setCategoryId(e.target.value)}
                         >
                             <option value={""}>Select category</option>
-                            {linearCategoryList(category.categories).map((item) => (
+                            {linearCategories(category.categories).map((item) => (
                                 <option key={item.value} value={item.value}>
                                     {item.name}
                                 </option>
@@ -194,14 +182,23 @@ const ProductPage = (props) => {
     };
 
     const handleSubmitAddProduct = () => {
-        const form = new FormData();
-        form.append("name", productName);
-        form.append("price", price);
-        form.append("quantity", quantity);
-        form.append("description", description);
-        form.append("category", categoryId);
-        productPictures.map((pic) => form.append("productPicture", pic));
-        dispatch(addNewProduct(form));
+        if (productName !== "") {
+            const form = new FormData();
+            form.append("name", productName);
+            form.append("price", price);
+            form.append("quantity", quantity);
+            form.append("description", description);
+            form.append("category", categoryId);
+            productPictures.map((pic) => form.append("productPicture", pic));
+            dispatch(addNewProduct(form)).then(() => {
+                setProductName("");
+                setPrice("");
+                setQuantity("");
+                setDescription("");
+                setCategoryId("");
+                setProductPictures([]);
+            });
+        }
         handleCloseAddProduct();
     };
 
@@ -222,7 +219,7 @@ const ProductPage = (props) => {
                     {product.products.length > 0
                         ? product.products.map((product, index) => (
                               <tr
-                                  onClick={()=>handleOpenDisplayProduct(product)}
+                                  onClick={() => handleOpenDisplayProduct(product)}
                                   key={product._id}
                                   style={{ cursor: "pointer" }}
                               >
