@@ -22,6 +22,7 @@ const ProductPage = (props) => {
     const [productName, setProductName] = useState("");
     const [quantity, setQuantity] = useState("");
     const [price, setPrice] = useState("");
+    const [listPrice, setListPrice] = useState('');
     const [categoryId, setCategoryId] = useState("");
     const [description, setDescription] = useState("");
     const [productPictures, setProductPictures] = useState([]);
@@ -51,7 +52,7 @@ const ProductPage = (props) => {
                     </Col>
                     <Col md="6">
                         <label className="key">Price</label>
-                        <p className="value">{productDetails.price}</p>
+                        <p className="value">&#8377;{productDetails.price} (&#8377;{productDetails.listPrice})</p>
                     </Col>
                 </Row>
                 <Row>
@@ -106,15 +107,7 @@ const ProductPage = (props) => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={4} style={{ paddingRight: 7 }}>
-                        <Input
-                            type={"number"}
-                            value={quantity}
-                            placeholder={"Quantity"}
-                            onChange={(e) => setQuantity(e.target.value)}
-                        />
-                    </Col>
-                    <Col md={4} style={{ paddingRight: 7, paddingLeft: 7 }}>
+                    <Col md={6} style={{ paddingRight: 7 }}>
                         <Input
                             type={"number"}
                             value={price}
@@ -122,7 +115,25 @@ const ProductPage = (props) => {
                             onChange={(e) => setPrice(e.target.value)}
                         />
                     </Col>
-                    <Col md={4} style={{ paddingLeft: 7 }}>
+                    <Col md={6} style={{ paddingLeft: 7 }}>
+                        <Input
+                            type={"number"}
+                            value={listPrice}
+                            placeholder={"Cost Price"}
+                            onChange={(e) => setListPrice(e.target.value)}
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={6} style={{ paddingRight: 7 }}>
+                        <Input
+                            type={"number"}
+                            value={quantity}
+                            placeholder={"Quantity"}
+                            onChange={(e) => setQuantity(e.target.value)}
+                        />
+                    </Col>
+                    <Col md={6} style={{ paddingLeft: 7 }}>
                         <select
                             className="form-control"
                             value={categoryId}
@@ -186,6 +197,7 @@ const ProductPage = (props) => {
             const form = new FormData();
             form.append("name", productName);
             form.append("price", price);
+            form.append('listPrice', parseInt(price+100))
             form.append("quantity", quantity);
             form.append("description", description);
             form.append("category", categoryId);
@@ -209,7 +221,8 @@ const ProductPage = (props) => {
                     <tr>
                         <th>#</th>
                         <th>Name</th>
-                        <th>Price</th>
+                        <th>Sell Price</th>
+                        <th>List Price</th>
                         <th>Quantity</th>
                         <th>Category</th>
                         <th>Created By</th>
@@ -226,6 +239,7 @@ const ProductPage = (props) => {
                                   <td>{index + 1}</td>
                                   <td>{product.name}</td>
                                   <td>&#8377;&nbsp;{product.price}</td>
+                                  <td>&#8377;&nbsp;{product.listPrice}</td>
                                   <td>{product.quantity}</td>
                                   <td>{product.category.name}</td>
                                   <td>{`${product.createdBy.firstName} ${product.createdBy.lastName}`}</td>

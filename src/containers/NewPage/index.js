@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import Input from '../../components/UI/Input';
 import Modal from "../../components/UI/Modal";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col,Table } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa";
 import { linearCategories } from "../../helpers/linearCategories";
 import "../style.css";
@@ -26,9 +26,9 @@ const Page = (props) => {
     const page = useSelector(state => state.page);
     const dispatch = useDispatch()
 
-    useEffect(()=>{
-        dispatch(getAllPages())
-    },[])
+    // useEffect(()=>{
+    //     dispatch(getAllPages())
+    // },[])
 
     useEffect(() => {
         const list = linearCategories(category.categories);
@@ -188,6 +188,40 @@ const Page = (props) => {
             </Modal>
         );
     };
+
+    const renderAllPages = () => {
+        return (
+            <Table hover responsive="sm" className="mt-3">
+                <thead style={{ background: "#343a40", color: "#fff", fontSize: 16 }}>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Created By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {page.pages.length > 0
+                        ? page.pages.map((page, index) => (
+                              <tr
+                                //   onClick={() => handleOpenDisplayProduct(page)}
+                                  key={page._id}
+                                  style={{ cursor: "pointer" }}
+                              >
+                                  <td>{index + 1}</td>
+                                  <td>{page.title}</td>
+                                  <td>{page.description}</td>
+                                  <td>{page.category.name}</td>
+                                  <td>{`${page.createdBy.firstName} ${page.createdBy.lastName}`}</td>
+                              </tr>
+                          ))
+                        : null}
+                </tbody>
+            </Table>
+        );
+    };
+
     return (
         <Layout sidebar>
             <Container>
@@ -203,7 +237,7 @@ const Page = (props) => {
                 </Row>
                 <Row>
                     <Col>
-                        {JSON.stringify(page)}
+                        {renderAllPages()}
                     </Col>
                 </Row>
             </Container>
